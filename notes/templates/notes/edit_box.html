@@ -1,0 +1,43 @@
+{% extends 'notes/base.html' %}
+
+{% block title %}Edit Box - SyntaxSaga{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-800">Edit Box</h1>
+        <a href="{% url 'home' %}" class="px-4 py-2 border border-gray-200 rounded-md hover:bg-gray-50 transition-all btn-hover">
+            Back to Home
+        </a>
+    </div>
+    
+    <form method="post" class="bg-white p-6 rounded-lg border border-gray-200 shadow-sm animate__animated animate__fadeIn">
+        {% csrf_token %}
+        <div class="space-y-6">
+            <div>
+                <label for="name" class="block text-sm font-medium mb-2 text-gray-700">Box Name</label>
+                <input type="text" name="name" id="name" required
+                    class="w-full px-4 py-2 bg-white border border-gray-200 rounded-md focus:outline-none focus:border-primary input-focus text-gray-800"
+                    value="{{ box.name }}">
+            </div>
+            
+            <div>
+                <label for="topic" class="block text-sm font-medium mb-2 text-gray-700">Topic</label>
+                <input type="text" name="topic" id="topic"
+                    class="w-full px-4 py-2 bg-white border border-gray-200 rounded-md focus:outline-none focus:border-primary input-focus text-gray-800"
+                    value="{{ box.topic }}"
+                    placeholder="e.g., Web Development, Data Science, Machine Learning">
+            </div>
+            
+            <div class="flex justify-end space-x-4">
+                <a href="{% url 'home' %}" class="px-4 py-2 border border-gray-200 rounded-md hover:bg-gray-50 transition-all btn-hover">
+                    Cancel
+                </a>
+                <button type="submit" class="px-4 py-2 bg-primary text-white hover:bg-primary-dark rounded-md transition-all btn-hover">
+                    Save Changes
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %} 

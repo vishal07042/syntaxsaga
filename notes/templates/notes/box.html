@@ -1,0 +1,64 @@
+{% extends 'notes/base.html' %}
+
+{% block title %}{{ box.name }} - SyntaxSaga{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <div class="flex justify-between items-center mb-8">
+        <div>
+            <h1 class="text-3xl font-bold">{{ box.name }}</h1>
+            <p class="text-gray-400 mt-2">{{ box.topic }}</p>
+        </div>
+        <a href="{% url 'create_note' box.id %}" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-md transition-colors">
+            New Note
+        </a>
+    </div>
+    
+    {% if notes %}
+        <div class="space-y-8">
+            {% for note in notes %}
+            <div class="bg-vscode-sidebar p-6 rounded-lg border border-gray-700">
+                <div class="flex justify-between items-start mb-4">
+                    <h2 class="text-2xl font-semibold">{{ note.title }}</h2>
+                    <div class="flex space-x-2">
+                        <a href="{% url 'edit_note' note.id %}" class="px-3 py-1 bg-yellow-600 hover:bg-yellow-700 rounded-md transition-colors text-sm">
+                            Edit
+                        </a>
+                        <form method="post" action="{% url 'delete_note' note.id %}" class="inline">
+                            {% csrf_token %}
+                            <button type="submit" onclick="return confirm('Are you sure you want to delete this note?')" 
+                                class="px-3 py-1 bg-red-600 hover:bg-red-700 rounded-md transition-colors text-sm">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="prose prose-invert max-w-none">
+                    <pre class="bg-vscode-bg p-4 rounded-md overflow-x-auto"><code class="language-{{ note.language|default:'python' }}">{{ note.content }}</code></pre>
+                </div>
+                
+                <div class="mt-4 text-sm text-gray-400">
+                    <span>Created: {{ note.created_at|date:"M d, Y" }}</span>
+                    <span class="ml-4">Note {{ forloop.counter }} of {{ notes|length }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="text-center py-12">
+            <p class="text-gray-400 mb-4">No notes in this box yet.</p>
+            <a href="{% url 'create_note' box.id %}" class="inline-block px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-md transition-colors">
+                Create Your First Note
+            </a>
+        </div>
+    {% endif %}
+</div>
+
+<script>
+    // Re-highlight the code when the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'notes/base.html' %}
+
+{% block title %}{{ note.title }} - SyntaxSaga{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <div class="flex justify-between items-center mb-8">
+        <div>
+            <h1 class="text-3xl font-bold">{{ note.title }}</h1>
+            <p class="text-gray-400 mt-2">
+                In <a href="{% url 'view_box' note.box.id %}" class="text-blue-400 hover:underline">{{ note.box.name }}</a>
+                • Created {{ note.created_at|date:"M d, Y" }}
+            </p>
+        </div>
+        <div class="space-x-4">
+            <a href="{% url 'view_box' note.box.id %}" class="px-4 py-2 border border-gray-700 rounded-md hover:bg-gray-700 transition-colors inline-block">
+                Back to Box
+            </a>
+        </div>
+    </div>
+    
+    <div class="bg-vscode-sidebar rounded-lg border border-gray-700 overflow-hidden">
+        <pre class="line-numbers"><code class="language-{{ note.language|default:'python' }}">{{ note.content }}</code></pre>
+    </div>
+</div>
+
+<script>
+    // Re-highlight the code when the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+    });
+</script>
+{% endblock %}

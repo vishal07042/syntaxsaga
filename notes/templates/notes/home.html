@@ -1,0 +1,58 @@
+{% extends 'notes/base.html' %}
+
+{% block title %}Home - SyntaxSaga{% endblock %}
+
+{% block content %}
+<div class="space-y-8">
+    <div class="flex justify-between items-center">
+        <h1 class="text-3xl font-bold text-gray-800">My Dev Journal</h1>
+        <a href="{% url 'create_box' %}" class="px-4 py-2 bg-primary text-white hover:bg-primary-dark rounded-md transition-all btn-hover">
+            New Box
+        </a>
+    </div>
+    
+    {% if boxes %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for box in boxes %}
+            <div class="bg-white p-6 rounded-lg border border-gray-200 shadow-sm card-hover">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <h2 class="text-xl font-semibold text-gray-800">{{ box.name }}</h2>
+                        <p class="text-gray-500 text-sm mt-1">{{ box.topic }}</p>
+                    </div>
+                    <div class="flex space-x-2">
+                        <a href="{% url 'edit_box' box.id %}" class="p-2 text-primary hover:text-primary-dark transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                            </svg>
+                        </a>
+                        <form method="post" action="{% url 'delete_box' box.id %}" class="inline">
+                            {% csrf_token %}
+                            <button type="submit" onclick="return confirm('Are you sure you want to delete this box and all its notes?')" 
+                                class="p-2 text-red-500 hover:text-red-600 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center">
+                    <a href="{% url 'view_box' box.id %}" class="text-primary hover:text-primary-dark transition-colors">
+                        View Notes ({{ box.notes.count }})
+                    </a>
+                    <span class="text-gray-500 text-sm">{{ box.created_at|date:"M d, Y" }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="text-center py-12 bg-white rounded-lg border border-gray-200 shadow-sm animate__animated animate__pulse">
+            <p class="text-gray-500 mb-4">No boxes created yet.</p>
+            <a href="{% url 'create_box' %}" class="inline-block px-6 py-3 bg-primary text-white hover:bg-primary-dark rounded-md transition-all btn-hover">
+                Create Your First Box
+            </a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

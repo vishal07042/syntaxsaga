@@ -1,0 +1,37 @@
+{% extends 'notes/base.html' %}
+
+{% block title %}Create Box - SyntaxSaga{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    <h1 class="text-3xl font-bold mb-8">Create New Box</h1>
+    
+    <form method="post" class="bg-vscode-sidebar p-6 rounded-lg border border-gray-700">
+        {% csrf_token %}
+        <div class="space-y-4">
+            <div>
+                <label for="name" class="block text-sm font-medium mb-2">Box Name</label>
+                <input type="text" name="name" id="name" required
+                    class="w-full px-4 py-2 bg-vscode-bg border border-gray-700 rounded-md focus:outline-none focus:border-blue-500 text-gray-200"
+                    placeholder="e.g., Django Projects, React Components">
+            </div>
+            
+            <div>
+                <label for="topic" class="block text-sm font-medium mb-2">Topic</label>
+                <input type="text" name="topic" id="topic" required
+                    class="w-full px-4 py-2 bg-vscode-bg border border-gray-700 rounded-md focus:outline-none focus:border-blue-500 text-gray-200"
+                    placeholder="e.g., Web Development, Data Science, Machine Learning">
+            </div>
+            
+            <div class="flex justify-end space-x-4">
+                <a href="{% url 'home' %}" class="px-4 py-2 border border-gray-700 rounded-md hover:bg-gray-700 transition-colors">
+                    Cancel
+                </a>
+                <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-md transition-colors">
+                    Create Box
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
